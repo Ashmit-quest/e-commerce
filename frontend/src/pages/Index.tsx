@@ -1233,6 +1233,87 @@ export default function Index() {
           {/* ANALYTICS VIEW */}
           {currentView === 'analytics' && (
             <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-[1.75fr_1fr] gap-4">
+                {/* Revenue trend */}
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">Revenue trend</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Monthly, this year</p>
+                  </div>
+                  <div className="h-[220px] w-full mt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={[
+                        { name: "Jan", value: 24 }, { name: "Feb", value: 27 }, { name: "Mar", value: 22 },
+                        { name: "Apr", value: 31 }, { name: "May", value: 29 }, { name: "Jun", value: 34 },
+                        { name: "Jul", value: 38 }, { name: "Aug", value: 33 }, { name: "Sep", value: 41 },
+                        { name: "Oct", value: 45 }, { name: "Nov", value: 48 }, { name: "Dec", value: 52 }
+                      ]}>
+                        <defs>
+                          <linearGradient id="trendColor" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#F6A623" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#F6A623" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <Tooltip />
+                        <Area type="monotone" dataKey="value" stroke="#F6A623" strokeWidth={2} fill="url(#trendColor)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Categories */}
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">By category</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Share of revenue</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-4 mt-4">
+                    <div className="relative w-[140px] h-[140px]">
+                      <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="12"/>
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#F6A623" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 0 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#FF6B45" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 42 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#FFC061" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 69 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#8AB4FF" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 88 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <b className="font-serif text-[20px] leading-none block text-[#F6EFE6]">
+                          <AnimatedNumber value={48.2} prefix="$" suffix="k" />
+                        </b>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">total</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full space-y-1.5">
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#F6A623]" /> Candles
+                        </span>
+                        <span className="font-semibold">42%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#FF6B45]" /> Diffusers
+                        </span>
+                        <span className="font-semibold">27%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#FFC061]" /> Room sprays
+                        </span>
+                        <span className="font-semibold">19%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#8AB4FF]" /> Refills
+                        </span>
+                        <span className="font-semibold">12%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Converssion funnel */}
               <div className="glass-panel rounded-[18px] p-5">
                 <h3 className="font-serif font-medium text-[18px] mb-1">Conversion Funnel</h3>
