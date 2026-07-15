@@ -951,40 +951,95 @@ export default function Index() {
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={products.length} />
                   </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 2 new scents this week</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Units sold</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={1624} />
                   </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 11% compared to last month</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Low stock items</div>
                   <div className="font-serif font-medium text-[27px] mt-2 text-[#FF8A8A]">
                     <AnimatedNumber value={products.filter(p => p.stock < 30).length} />
                   </div>
+                  <div className="text-[11.5px] text-muted-foreground mt-1">needs restock threshold</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
-                  <div className="text-[12.5px] text-muted-foreground">Total value</div>
+                  <div className="text-[12.5px] text-muted-foreground">Product revenue</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={46.9} prefix="$" suffix="k" />
                   </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 9.3% in sales performance</div>
                 </div>
               </div>
 
               {/* Scent catalogue chart */}
-              <div className="glass-panel rounded-[18px] p-5">
-                <h3 className="font-serif font-medium text-[18px] mb-1">Top scents by stock level</h3>
-                <p className="text-[12.5px] text-muted-foreground mb-4">Inventory health & units count</p>
-                <div className="h-[220px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={products}>
-                      <XAxis dataKey="name" stroke="#7C6F60" fontSize={11} />
-                      <YAxis stroke="#7C6F60" fontSize={11} />
-                      <Tooltip cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
-                      <Bar dataKey="stock" fill="#F6A623" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+              <div className="grid grid-cols-1 lg:grid-cols-[1.75fr_1fr] gap-4">
+                <div className="glass-panel rounded-[18px] p-5">
+                  <h3 className="font-serif font-medium text-[18px] mb-1">Units sold</h3>
+                  <p className="text-[12.5px] text-muted-foreground mb-4">Top scents</p>
+                  <div className="h-[220px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={[
+                        { name: "Amber", value: 312 },
+                        { name: "Eucalypt", value: 241 },
+                        { name: "Ember", value: 198 },
+                        { name: "Cedar", value: 164 },
+                        { name: "Fig", value: 140 },
+                        { name: "Vanilla", value: 96 }
+                      ]}>
+                        <XAxis dataKey="name" stroke="#7C6F60" fontSize={11} />
+                        <YAxis stroke="#7C6F60" fontSize={11} />
+                        <Tooltip cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+                        <Bar dataKey="value" fill="#F6A623" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">Inventory health</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Distribution</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-4 mt-4">
+                    <div className="relative w-[140px] h-[140px]">
+                      <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="12"/>
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#6FE0A6" stroke-width="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 0 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#FFC061" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 78 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#FF8A8A" stroke-width="12" strokeLinecap="round" stroke-dasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 96 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <b className="font-serif text-[20px] leading-none block text-[#F6EFE6]">{products.length}</b>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">SKUs</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full space-y-1.5">
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#6FE0A6]" /> In stock
+                        </span>
+                        <span className="font-semibold">78%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#FFC061]" /> Low stock
+                        </span>
+                        <span className="font-semibold">18%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#FF8A8A]" /> Out of stock
+                        </span>
+                        <span className="font-semibold">4%</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -1030,23 +1085,98 @@ export default function Index() {
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={customers.length} />
                   </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 7.2% dynamic growth</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
-                  <div className="text-[12.5px] text-muted-foreground">New segment</div>
+                  <div className="text-[12.5px] text-muted-foreground">New this month</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={214} />
                   </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 18% acquisition speed</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Returning rate</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={42} suffix="%" />
                   </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 1.4% retention limit</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Avg lifetime spend</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={286} prefix="$" />
+                  </div>
+                  <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 4.9% overall performance</div>
+                </div>
+              </div>
+
+              {/* Graphical row */}
+              <div className="grid grid-cols-1 lg:grid-cols-[1.75fr_1fr] gap-4">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">Customer growth</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Total, last 12 months</p>
+                  </div>
+                  <div className="h-[220px] w-full mt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={[
+                        { name: "Jan", value: 1200 }, { name: "Feb", value: 1420 }, { name: "Mar", value: 1650 },
+                        { name: "Apr", value: 1810 }, { name: "May", value: 2050 }, { name: "Jun", value: 2260 },
+                        { name: "Jul", value: 2480 }, { name: "Aug", value: 2650 }, { name: "Sep", value: 2820 },
+                        { name: "Oct", value: 2980 }, { name: "Nov", value: 3080 }, { name: "Dec", value: 3182 }
+                      ]}>
+                        <defs>
+                          <linearGradient id="customerColor" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#8AB4FF" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#8AB4FF" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <Tooltip />
+                        <Area type="monotone" dataKey="value" stroke="#8AB4FF" strokeWidth={2} fill="url(#customerColor)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">Segments</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Distribution</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-4 mt-4">
+                    <div className="relative w-[140px] h-[140px]">
+                      <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="12"/>
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#8ab4ff" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 0 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#F6A623" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 38 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#FF6B45" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 80 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <b className="font-serif text-[20px] leading-none block text-[#F6EFE6]">{customers.length}</b>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">people</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full space-y-1.5">
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#8ab4ff]" /> New
+                        </span>
+                        <span className="font-semibold">38%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#F6A623]" /> Returning
+                        </span>
+                        <span className="font-semibold">42%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#FF6B45]" /> VIP
+                        </span>
+                        <span className="font-semibold">20%</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
