@@ -218,6 +218,24 @@ export default function Index() {
   const [notifMenuOpen, setNotifMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
 
+  // Close menus on click outside
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.notif-container')) {
+        setNotifMenuOpen(false);
+      }
+      if (!target.closest('.range-container')) {
+        setRangeMenuOpen(false);
+      }
+      if (!target.closest('.avatar-container')) {
+        setAvatarMenuOpen(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
+
   // New item States
   const [newCampaignName, setNewCampaignName] = useState("Autumn Ember — early access");
   const [newCampaignAudience, setNewCampaignAudience] = useState("All subscribers · 8,420");
@@ -491,7 +509,7 @@ export default function Index() {
             </div>
 
             {/* Range Selector */}
-            <div className="relative">
+            <div className="relative range-container">
               <button 
                 onClick={() => setRangeMenuOpen(!rangeMenuOpen)}
                 className="hidden sm:flex items-center gap-2 bg-[#fff7ee0b] border border-[#ffe8cd1a] px-4 h-11 rounded-[12px] text-muted-foreground hover:text-foreground hover:border-[#ffe8cd2e] transition-all"
@@ -532,7 +550,7 @@ export default function Index() {
             </div>
             
             {/* Notification Bell */}
-            <div className="relative">
+            <div className="relative notif-container">
               <button 
                 onClick={() => {
                   setNotifMenuOpen(!notifMenuOpen);
@@ -590,7 +608,7 @@ export default function Index() {
             </button>
             
             {/* Avatar Dropdown */}
-            <div className="relative">
+            <div className="relative avatar-container">
               <div 
                 onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
                 className="w-11 h-11 rounded-[12px] flex-none flex items-center justify-center font-bold text-[15px] text-[#2a1c10] cursor-pointer bg-gradient-to-br from-[#FFC061] to-[#FF6B45] shadow-sm"
