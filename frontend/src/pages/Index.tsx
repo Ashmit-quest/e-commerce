@@ -581,8 +581,11 @@ export default function Index() {
             </div>
             
             {/* Create Campaign */}
-            <button onClick={() => { setNewCampaignSuccess(false); setCampaignModalOpen(true); }} className="h-11 px-4.5 rounded-[12px] bg-gradient-primary shadow-glow hover:shadow-glow-hover hover:-translate-y-[2px] active:translate-y-0 text-[#2a1c10] font-semibold text-[14px] flex items-center gap-2 transition-all whitespace-nowrap">
-              <Megaphone size={17} />
+            <button 
+              onClick={() => { setNewCampaignSuccess(false); setCampaignModalOpen(true); }} 
+              className="h-11 px-5 rounded-[12px] bg-gradient-primary shadow-glow hover:shadow-glow-hover hover:-translate-y-[2px] active:translate-y-0 text-[#2a1c10] font-bold text-[14px] flex items-center gap-2.5 transition-all whitespace-nowrap"
+            >
+              <Megaphone size={18} className="drop-shadow-sm" />
               <span className="hidden sm:inline">New campaign</span>
             </button>
             
