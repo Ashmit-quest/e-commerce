@@ -766,28 +766,28 @@ export default function Index() {
           {currentView === 'orders' && (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Total orders</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={orders.length} />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 8.1% compared to last week</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Paid</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={orders.filter(o => o.status === 'paid').length} />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 6.4% completed successfully</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Pending</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={orders.filter(o => o.status === 'pend').length} />
                   </div>
                   <div className="text-[11.5px] text-muted-foreground mt-1">Awaiting checkout action</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Shipped</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={orders.filter(o => o.status === 'ship').length} />
@@ -946,28 +946,28 @@ export default function Index() {
           {currentView === 'products' && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Active products</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={products.length} />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 2 new scents this week</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Units sold</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={1624} />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 11% compared to last month</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Low stock items</div>
                   <div className="font-serif font-medium text-[27px] mt-2 text-[#FF8A8A]">
                     <AnimatedNumber value={products.filter(p => p.stock < 30).length} />
                   </div>
                   <div className="text-[11.5px] text-muted-foreground mt-1">needs restock threshold</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Product revenue</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={46.9} prefix="$" suffix="k" />
@@ -1080,28 +1080,28 @@ export default function Index() {
           {currentView === 'customers' && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Total customers</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={customers.length} />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 7.2% dynamic growth</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">New this month</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={214} />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 18% acquisition speed</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Returning rate</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={42} suffix="%" />
                   </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 1.4% retention limit</div>
                 </div>
-                <div className="glass-panel rounded-[18px] p-4.5">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
                   <div className="text-[12.5px] text-muted-foreground">Avg lifetime spend</div>
                   <div className="font-serif font-medium text-[27px] mt-2">
                     <AnimatedNumber value={286} prefix="$" />
