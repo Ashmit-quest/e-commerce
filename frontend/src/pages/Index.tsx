@@ -410,11 +410,36 @@ export default function Index() {
   const chartData = revenueDataMap[selectedRange] || revenueDataMap["30d"];
 
   // Aggregate Metrics based on selected range
-  const metricsMap: Record<string, { revenue: string; orders: string; aov: string; conv: string }> = {
-    "today": { revenue: "4.8", orders: "128", aov: "37.6", conv: "4.90" },
-    "7d": { revenue: "11.2", orders: "302", aov: "37.2", conv: "4.81" },
-    "30d": { revenue: "48.2", orders: "1,284", aov: "37.6", conv: "4.72" },
-    "12m": { revenue: "512.3", orders: "14,820", aov: "34.6", conv: "4.10" }
+  const metricsMap: Record<string, {
+    revenue: { val: number; prefix: string; suffix: string; delta: string; up: boolean };
+    orders: { val: number; prefix: string; suffix: string; delta: string; up: boolean };
+    aov: { val: number; prefix: string; suffix: string; delta: string; up: boolean };
+    conv: { val: number; prefix: string; suffix: string; delta: string; up: boolean };
+  }> = {
+    "today": {
+      revenue: { val: 4.8, prefix: "$", suffix: "k", delta: "2.1%", up: true },
+      orders: { val: 128, prefix: "", suffix: "", delta: "1.4%", up: true },
+      aov: { val: 37.6, prefix: "$", suffix: "", delta: "0.8%", up: true },
+      conv: { val: 4.90, prefix: "", suffix: "%", delta: "0.2%", up: true }
+    },
+    "7d": {
+      revenue: { val: 11.2, prefix: "$", suffix: "k", delta: "6.2%", up: true },
+      orders: { val: 302, prefix: "", suffix: "", delta: "4.9%", up: true },
+      aov: { val: 37.2, prefix: "$", suffix: "", delta: "1.1%", up: true },
+      conv: { val: 4.81, prefix: "", suffix: "%", delta: "0.2%", up: false }
+    },
+    "30d": {
+      revenue: { val: 48.2, prefix: "$", suffix: "k", delta: "12.4%", up: true },
+      orders: { val: 1284, prefix: "", suffix: "", delta: "8.1%", up: true },
+      aov: { val: 37.6, prefix: "$", suffix: "", delta: "3.9%", up: true },
+      conv: { val: 4.72, prefix: "", suffix: "%", delta: "0.4%", up: false }
+    },
+    "12m": {
+      revenue: { val: 512.3, prefix: "$", suffix: "k", delta: "42%", up: true },
+      orders: { val: 14820, prefix: "", suffix: "", delta: "31%", up: true },
+      aov: { val: 34.6, prefix: "$", suffix: "", delta: "6.2%", up: true },
+      conv: { val: 4.10, prefix: "", suffix: "%", delta: "1.1%", up: false }
+    }
   };
 
   const activeMetrics = metricsMap[selectedRange] || metricsMap["30d"];
@@ -598,13 +623,13 @@ export default function Index() {
           {/* DASHBOARD VIEW */}
           {currentView === 'dashboard' && (
             <div className="space-y-4">
-              {/* KPIs */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <KPI onClick={() => setView('analytics')} title="Revenue" value={activeMetrics.revenue} prefix="$" suffix="k" delta="12.4%" deltaUp={true} sparkPts="0,24 12,20 24,22 36,12 48,15 60,6 76,3" delay="0.05s" />
-                <KPI onClick={() => setView('orders')} title="Orders" value={activeMetrics.orders} delta="8.1%" deltaUp={true} sparkPts="0,20 12,22 24,14 36,18 48,10 60,12 76,5" delay="0.12s" />
-                <KPI onClick={() => setView('products')} title="Avg order" value={activeMetrics.aov} prefix="$" delta="3.9%" deltaUp={true} sparkPts="0,18 12,16 24,17 36,13 48,14 60,9 76,8" delay="0.19s" />
-                <KPI onClick={() => setView('analytics')} title="Conversion" value={activeMetrics.conv} suffix="%" delta="0.4%" deltaUp={false} sparkPts="0,8 12,10 24,7 36,12 48,11 60,16 76,15" delay="0.26s" />
-              </div>
+          {/* KPIs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <KPI onClick={() => setView('analytics')} title="Revenue" value={activeMetrics.revenue.val} prefix={activeMetrics.revenue.prefix} suffix={activeMetrics.revenue.suffix} delta={activeMetrics.revenue.delta} deltaUp={activeMetrics.revenue.up} sparkPts="0,24 12,20 24,22 36,12 48,15 60,6 76,3" delay="0.05s" />
+            <KPI onClick={() => setView('orders')} title="Orders" value={activeMetrics.orders.val} prefix={activeMetrics.orders.prefix} suffix={activeMetrics.orders.suffix} delta={activeMetrics.orders.delta} deltaUp={activeMetrics.orders.up} sparkPts="0,20 12,22 24,14 36,18 48,10 60,12 76,5" delay="0.12s" />
+            <KPI onClick={() => setView('products')} title="Avg order" value={activeMetrics.aov.val} prefix={activeMetrics.aov.prefix} suffix={activeMetrics.aov.suffix} delta={activeMetrics.aov.delta} deltaUp={activeMetrics.aov.up} sparkPts="0,18 12,16 24,17 36,13 48,14 60,9 76,8" delay="0.19s" />
+            <KPI onClick={() => setView('analytics')} title="Conversion" value={activeMetrics.conv.val} prefix={activeMetrics.conv.prefix} suffix={activeMetrics.conv.suffix} delta={activeMetrics.conv.delta} deltaUp={activeMetrics.conv.up} sparkPts="0,8 12,10 24,7 36,12 48,11 60,16 76,15" delay="0.26s" />
+          </div>
 
               {/* Graphical row */}
               <div className="grid grid-cols-1 lg:grid-cols-[1.75fr_1fr] gap-4">
