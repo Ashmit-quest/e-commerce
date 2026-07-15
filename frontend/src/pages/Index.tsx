@@ -1353,7 +1353,10 @@ export default function Index() {
                     <h3 className="font-serif font-medium text-[18px]">Campaigns</h3>
                     <p className="text-[12.5px] text-muted-foreground mt-0.5">Reach your subscribers across email, SMS & push</p>
                   </div>
-                  <button onClick={() => { setNewCampaignSuccess(false); setCampaignModalOpen(true); }} className="h-9 px-4.5 rounded-[12px] bg-gradient-primary text-[#2a1c10] font-bold text-[13px] flex items-center gap-2 transition-all">
+                  <button 
+                    onClick={() => { setNewCampaignSuccess(false); setCampaignModalOpen(true); }} 
+                    className="h-10 px-5 rounded-[12px] bg-gradient-primary shadow-glow hover:shadow-glow-hover hover:-translate-y-[2px] active:translate-y-0 text-[#2a1c10] font-bold text-[13.5px] flex items-center gap-2 transition-all"
+                  >
                     <Plus size={16} /> New
                   </button>
                 </div>
