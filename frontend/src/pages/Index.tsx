@@ -118,7 +118,7 @@ const AmbientBackground = () => (
   </>
 );
 
-const Sidebar = ({ currentView, setView }: { currentView: string; setView: (v: string) => void }) => {
+const Sidebar = ({ currentView, setView, onUpgrade }: { currentView: string; setView: (v: string) => void; onUpgrade: () => void }) => {
   return (
     <aside className="sticky top-0 h-screen w-[248px] flex-none border-r border-[#ffe8cd1a] flex flex-col py-6 px-4 z-10 hidden md:flex">
       <div className="flex items-center gap-3 px-2.5 pb-5">
@@ -149,7 +149,7 @@ const Sidebar = ({ currentView, setView }: { currentView: string; setView: (v: s
       <div className="mt-auto p-3.5 rounded-[12px] bg-[#fff7ee0b] border border-[#ffe8cd1a] text-[13px]">
         <b className="block font-serif text-[15px] mb-1 font-medium">Studio plan</b>
         <span className="text-muted-foreground block mb-2.5">72% of monthly send limit used</span>
-        <button className="w-full py-2.5 rounded-[9px] font-sans font-semibold text-[#2a1c10] bg-gradient-primary hover:brightness-110 transition-all">
+        <button onClick={onUpgrade} className="w-full py-2.5 rounded-[9px] font-sans font-semibold text-[#2a1c10] bg-gradient-primary hover:brightness-110 transition-all">
           Upgrade
         </button>
       </div>
@@ -213,6 +213,7 @@ export default function Index() {
   const [campaignModalOpen, setCampaignModalOpen] = useState(false);
   const [productModalOpen, setProductModalOpen] = useState(false);
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [rangeMenuOpen, setRangeMenuOpen] = useState(false);
   const [notifMenuOpen, setNotifMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
@@ -228,6 +229,8 @@ export default function Index() {
   const [newCustStatus, setNewCustStatus] = useState("Active");
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  
+  const [selectedPlan, setSelectedPlan] = useState("Growth");
 
   // Fetch Data
   const fetchData = async () => {
@@ -449,7 +452,7 @@ export default function Index() {
       <AmbientBackground />
       
       <div className="relative z-10 flex min-h-screen">
-        <Sidebar currentView={currentView} setView={setView} />
+        <Sidebar currentView={currentView} setView={setView} onUpgrade={() => setUpgradeModalOpen(true)} />
         
         <main className="flex-1 p-5 md:p-6 pb-20 min-w-0">
           {/* Top Bar */}
@@ -1617,6 +1620,89 @@ export default function Index() {
                 <div className="flex gap-2.5 mt-6">
                   <button onClick={() => { setProductModalOpen(false); setEditingProduct(null); }} className="px-4 py-3 rounded-[12px] border border-[#ffe8cd2e] bg-transparent text-muted-foreground font-semibold text-[14px] hover:bg-[#fff7ee0b] transition-colors">Cancel</button>
                   <button onClick={handleUpdateProduct} className="flex-1 py-3 rounded-[12px] bg-gradient-primary shadow-glow hover:shadow-glow-hover hover:-translate-y-0.5 text-[#2a1c10] font-bold text-[14px] transition-all">Save changes</button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* UPGRADE MODAL */}
+      <AnimatePresence>
+        {upgradeModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[#08050499] backdrop-blur-sm"
+              onClick={() => setUpgradeModalOpen(false)}
+            />
+            <motion.div 
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.97 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="w-full max-w-[600px] bg-gradient-to-b from-[#241A15] to-[#1C1512] border border-[#ffe8cd2e] rounded-[22px] p-6 shadow-panel relative overflow-hidden z-10"
+            >
+              <div className="absolute -top-[60px] -right-[40px] w-[200px] h-[200px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(246,166,35,.22), transparent 70%)' }}></div>
+              <button onClick={() => setUpgradeModalOpen(false)} className="absolute top-4 right-4 w-8 h-8 rounded-[10px] border border-[#ffe8cd1a] bg-[#fff7ee0b] text-muted-foreground hover:text-foreground flex items-center justify-center z-20 transition-colors">
+                <X size={16} />
+              </button>
+
+              <div>
+                <h2 className="font-serif font-medium text-[23px] mb-1 text-foreground">Upgrade your plan</h2>
+                <p className="text-muted-foreground text-[14px] mb-5">Unlock unlimited sends, advanced segments, and priority support.</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                  {/* Studio Plan */}
+                  <button 
+                    onClick={() => setSelectedPlan('Studio')}
+                    className={`relative text-left p-3.5 rounded-[14px] border transition-all ${
+                      selectedPlan === 'Studio' ? 'border-[#F6A623] bg-[#f6a6231a] shadow-[0_0_0_1px_#F6A623_inset]' : 'border-[#ffe8cd1a] bg-[#00000033] hover:border-[#ffe8cd2e]'
+                    }`}
+                  >
+                    <b className="block font-serif font-medium text-[15px] mb-1.5 text-foreground">Studio</b>
+                    <span className="block font-serif text-[22px] mb-1.5 text-foreground">$0<i className="not-italic text-[12px] text-muted-foreground">/mo</i></span>
+                    <small className="block text-muted-foreground text-[11px] leading-snug">Current plan · 8,420 sends</small>
+                  </button>
+
+                  {/* Growth Plan */}
+                  <button 
+                    onClick={() => setSelectedPlan('Growth')}
+                    className={`relative text-left p-3.5 rounded-[14px] border transition-all ${
+                      selectedPlan === 'Growth' ? 'border-[#F6A623] bg-[#f6a6231a] shadow-[0_0_0_1px_#F6A623_inset]' : 'border-[#ffe8cd1a] bg-[#00000033] hover:border-[#ffe8cd2e]'
+                    }`}
+                  >
+                    <span className="absolute -top-2 right-2 text-[9px] font-bold tracking-[0.06em] uppercase bg-[#F6A623] text-[#2a1c10] px-2 py-0.5 rounded-full">Popular</span>
+                    <b className="block font-serif font-medium text-[15px] mb-1.5 text-foreground">Growth</b>
+                    <span className="block font-serif text-[22px] mb-1.5 text-foreground">$49<i className="not-italic text-[12px] text-muted-foreground">/mo</i></span>
+                    <small className="block text-muted-foreground text-[11px] leading-snug">Unlimited sends · segments · A/B</small>
+                  </button>
+
+                  {/* Scale Plan */}
+                  <button 
+                    onClick={() => setSelectedPlan('Scale')}
+                    className={`relative text-left p-3.5 rounded-[14px] border transition-all ${
+                      selectedPlan === 'Scale' ? 'border-[#F6A623] bg-[#f6a6231a] shadow-[0_0_0_1px_#F6A623_inset]' : 'border-[#ffe8cd1a] bg-[#00000033] hover:border-[#ffe8cd2e]'
+                    }`}
+                  >
+                    <b className="block font-serif font-medium text-[15px] mb-1.5 text-foreground">Scale</b>
+                    <span className="block font-serif text-[22px] mb-1.5 text-foreground">$149<i className="not-italic text-[12px] text-muted-foreground">/mo</i></span>
+                    <small className="block text-muted-foreground text-[11px] leading-snug">Everything + priority support</small>
+                  </button>
+                </div>
+
+                <div className="flex gap-2.5">
+                  <button onClick={() => setUpgradeModalOpen(false)} className="px-4 py-3 rounded-[12px] border border-[#ffe8cd2e] bg-transparent text-muted-foreground font-semibold text-[14px] hover:bg-[#fff7ee0b] transition-colors">Maybe later</button>
+                  <button onClick={() => {
+                    setUpgradeModalOpen(false);
+                    setToasts(prev => [...prev, {
+                      id: Date.now(),
+                      name: "Plan upgraded",
+                      item: `You're now on ${selectedPlan}`
+                    }]);
+                  }} className="flex-1 py-3 rounded-[12px] bg-gradient-primary shadow-glow hover:shadow-glow-hover hover:-translate-y-0.5 text-[#2a1c10] font-bold text-[14px] transition-all">
+                    Upgrade to {selectedPlan}
+                  </button>
                 </div>
               </div>
             </motion.div>
