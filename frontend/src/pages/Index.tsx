@@ -1386,7 +1386,7 @@ export default function Index() {
       {/* Toasts */}
       <div className="fixed right-6 bottom-6 z-50 flex flex-col gap-3 pointer-events-none">
         <AnimatePresence>
-          {toasts.map(t => (
+          {toasts.slice(-3).map(t => (
             <motion.div 
               key={t.id}
               initial={{ opacity: 0, x: 100 }}
