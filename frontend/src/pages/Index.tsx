@@ -796,6 +796,78 @@ export default function Index() {
                 </div>
               </div>
 
+              {/* Graphical row */}
+              <div className="grid grid-cols-1 lg:grid-cols-[1.75fr_1fr] gap-4">
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">Orders over time</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Daily, last 14 days</p>
+                  </div>
+                  <div className="h-[220px] w-full mt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={[
+                        { name: "1", value: 38 }, { name: "2", value: 42 }, { name: "3", value: 35 },
+                        { name: "4", value: 50 }, { name: "5", value: 47 }, { name: "6", value: 55 },
+                        { name: "7", value: 61 }, { name: "8", value: 49 }, { name: "9", value: 58 },
+                        { name: "10", value: 66 }, { name: "11", value: 60 }, { name: "12", value: 71 },
+                        { name: "13", value: 68 }, { name: "14", value: 80 }
+                      ]}>
+                        <defs>
+                          <linearGradient id="ordersColor" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#FF6B45" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#FF6B45" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <Tooltip />
+                        <Area type="monotone" dataKey="value" stroke="#FF6B45" strokeWidth={2} fill="url(#ordersColor)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                <div className="glass-panel rounded-[18px] p-5 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-serif font-medium text-[18px]">Order status</h3>
+                    <p className="text-[12.5px] text-muted-foreground mt-0.5">Distribution</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-4 mt-4">
+                    <div className="relative w-[140px] h-[140px]">
+                      <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="12"/>
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#6FE0A6" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 0 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#FFC061" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 63 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                        <motion.circle cx="60" cy="60" r="50" fill="none" stroke="#8ab4ff" strokeWidth="12" strokeLinecap="round" strokeDasharray="314" initial={{ strokeDashoffset: 314 }} animate={{ strokeDashoffset: -314 * 84 / 100 }} transition={{ duration: 1.1, ease: "easeOut" }} />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <b className="font-serif text-[20px] leading-none block text-[#F6EFE6]">{orders.length}</b>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">orders</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full space-y-1.5">
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#6FE0A6]" /> Paid
+                        </span>
+                        <span className="font-semibold">63%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#FFC061]" /> Pending
+                        </span>
+                        <span className="font-semibold">21%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[12px]">
+                        <span className="flex items-center gap-1.5 text-muted-foreground">
+                          <span className="w-2 h-2 rounded-full bg-[#8ab4ff]" /> Shipped
+                        </span>
+                        <span className="font-semibold">16%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Filter / Table Row */}
               <div className="glass-panel rounded-[18px] overflow-hidden p-5">
                 <div className="flex items-center justify-between gap-4 flex-wrap mb-5">
