@@ -4,6 +4,58 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { motion, AnimatePresence } from "framer-motion";
 import { API_URL } from '@/config';
 
+// --- Animated Number Component ---
+
+interface AnimatedNumberProps {
+  value: string | number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}
+
+const AnimatedNumber = ({ value, prefix = "", suffix = "", duration = 1000 }: AnimatedNumberProps) => {
+  const [displayValue, setDisplayValue] = useState<string>("0");
+
+  useEffect(() => {
+    const strVal = String(value);
+    const numericMatch = strVal.replace(/[^0-9.-]/g, "");
+    const target = parseFloat(numericMatch);
+
+    if (isNaN(target)) {
+      setDisplayValue(strVal);
+      return;
+    }
+
+    const dotIndex = strVal.indexOf(".");
+    const decimals = dotIndex !== -1 ? strVal.length - dotIndex - 1 : 0;
+
+    let start = 0;
+    let startTime: number | null = null;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      
+      const current = start + (target - start) * easeProgress;
+      const formatted = current.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+
+      setDisplayValue(formatted);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [value, duration]);
+
+  return <>{prefix}{displayValue}{suffix}</>;
+};
+
 // --- Types ---
 
 interface Product {
@@ -131,7 +183,7 @@ const KPI = ({ title, value, prefix = "", suffix = "", delta, deltaUp, sparkPts,
     </div>
     
     <div className="font-serif font-medium text-[31px] tracking-[-0.5px] my-3 relative z-10">
-      {prefix}{value}{suffix}
+      <AnimatedNumber value={value} prefix={prefix} suffix={suffix} />
     </div>
     
     <div className="flex items-center justify-between relative z-10">
@@ -691,22 +743,30 @@ export default function Index() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Total orders</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">{orders.length}</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={orders.length} />
+                  </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 8.1% compared to last week</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Paid</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">{orders.filter(o => o.status === 'paid').length}</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={orders.filter(o => o.status === 'paid').length} />
+                  </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 6.4% completed successfully</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Pending</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">{orders.filter(o => o.status === 'pend').length}</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={orders.filter(o => o.status === 'pend').length} />
+                  </div>
                   <div className="text-[11.5px] text-muted-foreground mt-1">Awaiting checkout action</div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Shipped</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">{orders.filter(o => o.status === 'ship').length}</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={orders.filter(o => o.status === 'ship').length} />
+                  </div>
                   <div className="text-[11.5px] text-[#6FE0A6] mt-1">▲ 4.7% dispatch rate</div>
                 </div>
               </div>
@@ -791,21 +851,27 @@ export default function Index() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Active products</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">{products.length}</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={products.length} />
+                  </div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Units sold</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">1,624</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={1624} />
+                  </div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Low stock items</div>
                   <div className="font-serif font-medium text-[27px] mt-2 text-[#FF8A8A]">
-                    {products.filter(p => p.stock < 30).length}
+                    <AnimatedNumber value={products.filter(p => p.stock < 30).length} />
                   </div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Total value</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">$46.9k</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={46.9} prefix="$" suffix="k" />
+                  </div>
                 </div>
               </div>
 
@@ -864,19 +930,27 @@ export default function Index() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Total customers</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">{customers.length}</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={customers.length} />
+                  </div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">New segment</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">214</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={214} />
+                  </div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Returning rate</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">42%</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={42} suffix="%" />
+                  </div>
                 </div>
                 <div className="glass-panel rounded-[18px] p-4.5">
                   <div className="text-[12.5px] text-muted-foreground">Avg lifetime spend</div>
-                  <div className="font-serif font-medium text-[27px] mt-2">$286</div>
+                  <div className="font-serif font-medium text-[27px] mt-2">
+                    <AnimatedNumber value={286} prefix="$" />
+                  </div>
                 </div>
               </div>
 
